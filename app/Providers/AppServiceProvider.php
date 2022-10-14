@@ -6,7 +6,7 @@ use App\UserImporter\export\DataTableJsonExporter;
 use App\UserImporter\import\DataTableCsvImporter;
 use App\UserImporter\mapping\AttributesUuidMapping;
 use App\UserImporter\mapping\UuidMapping;
-use App\UserImporter\UserImporter;
+use App\UserImporter\UserFileTransformer;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -18,7 +18,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(UserImporter::class, function () {
+        $this->app->singleton(UserFileTransformer::class, function () {
             $emailsMappingData = json_decode(file_get_contents(app_path('../data/mapping/emails.json')), true);
             $emailMapping = new UuidMapping($emailsMappingData, 'email');
             $filtersMappingData = json_decode(file_get_contents(app_path('../data/mapping/filters.json')), true);
@@ -35,7 +35,7 @@ class AppServiceProvider extends ServiceProvider
                 }
             ]);
 
-            return new UserImporter(
+            return new UserFileTransformer(
                 new DataTableCsvImporter(),
                 $emailMapping,
                 $attrMapping,

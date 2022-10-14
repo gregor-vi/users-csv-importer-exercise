@@ -9,7 +9,7 @@ use App\UserImporter\import\DataTableImporter;
 use App\UserImporter\mapping\AttributesUuidMapping;
 use App\UserImporter\mapping\UuidMapping;
 
-class UserImporter {
+class UserFileTransformer {
     private DataTableImporter $importer;
     private UuidMapping $emailsMap;
     private AttributesUuidMapping $attributesMap;
@@ -33,7 +33,7 @@ class UserImporter {
         $this->exporter = $exporter;
     }
 
-    public function import(string $inputFilename, string $outputFilename): void {
+    public function transform(string $inputFilename, string $outputFilename): void {
         $inputTable = $this->importer->createDataTable($inputFilename);
         $outTable = (new UuidConverter(
             $this->emailsMap,

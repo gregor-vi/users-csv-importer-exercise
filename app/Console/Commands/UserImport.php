@@ -6,7 +6,7 @@ use App\UserImporter\mapping\AttributesUuidMapping;
 use App\UserImporter\import\DataTableCsvImporter;
 use App\UserImporter\export\DataTableJsonExporter;
 use App\UserImporter\mapping\UuidMapping;
-use App\UserImporter\UserImporter;
+use App\UserImporter\UserFileTransformer;
 use App\UserImporter\UuidConverter;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
@@ -38,12 +38,12 @@ class UserImport extends Command
     /**
      * Execute the console command.
      */
-    public function handle(UserImporter $userImporter)
+    public function handle(UserFileTransformer $userImporter)
     {
         $inputFile = $this->argument('file');
         $outFile = 'out.json';
 
-        $userImporter->import($inputFile, $outFile);
+        $userImporter->transform($inputFile, $outFile);
         $this->info("Created file: ${outFile}");
     }
 }
